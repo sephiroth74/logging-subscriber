@@ -2,6 +2,7 @@
 mod tests {
 	use termbg::Theme;
 	use tracing::{debug, error, info, info_span, subscriber, trace, warn};
+	use tracing_subscriber::filter::LevelFilter;
 	use tracing_subscriber::prelude::*;
 	use tracing_subscriber::Registry;
 
@@ -10,9 +11,7 @@ mod tests {
 	#[test]
 	fn test_simple() {
 		let registry = Registry::default();
-		let term_subscriber = LoggingSubscriberBuilder::default()
-			.with_min_level(tracing::Level::TRACE)
-			.build();
+		let term_subscriber = LoggingSubscriberBuilder::default().with_min_level(LevelFilter::TRACE).build();
 		let subscriber = registry.with(term_subscriber);
 		subscriber::set_global_default(subscriber).unwrap();
 

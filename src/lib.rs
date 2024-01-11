@@ -2,6 +2,7 @@ use std::sync::{Arc, Mutex, MutexGuard, PoisonError};
 
 use console::{Style, StyledObject};
 use lazy_static::lazy_static;
+use tracing_subscriber::filter::LevelFilter;
 
 mod logging_subscriber;
 mod logging_writer;
@@ -19,7 +20,7 @@ pub(crate) struct BlockingWriter {}
 #[allow(dead_code)]
 pub struct LoggingWriter {
 	pub(crate) enabled: bool,
-	pub(crate) level: tracing::Level,
+	pub(crate) level: tracing::metadata::LevelFilter,
 
 	default_style: Style,
 
@@ -82,7 +83,7 @@ pub struct LoggingSubscriberBuilder {
 	style_debug: Option<Style>,
 	style_trace: Option<Style>,
 
-	min_level: tracing::Level,
+	min_level: tracing::metadata::LevelFilter,
 	separator: String,
 	timestamp_format: String,
 	format_level: LevelOutput,
@@ -149,7 +150,7 @@ pub fn set_enabled(value: bool) -> Result<(), PoisonError<MutexGuard<'static, Lo
 }
 
 #[allow(dead_code)]
-pub fn set_level(value: tracing::Level) -> Result<(), PoisonError<MutexGuard<'static, LoggingWriter>>> {
+pub fn set_level(value: LevelFilter) -> Result<(), PoisonError<MutexGuard<'static, LoggingWriter>>> {
 	match LOGGING_WRITER.lock() {
 		Ok(mut item) => {
 			item.level = value;

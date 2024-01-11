@@ -6,6 +6,7 @@ use std::ops::DerefMut;
 
 use log::Record;
 use tracing_log::AsLog;
+use tracing_subscriber::filter::LevelFilter;
 use tracing_subscriber::fmt::MakeWriter;
 
 use crate::{BlockingWriter, LevelOutput, LoggingWriter, LOGGING_WRITER};
@@ -14,7 +15,7 @@ impl Default for LoggingWriter {
 	fn default() -> Self {
 		LoggingWriter {
 			enabled: true,
-			level: tracing::Level::DEBUG,
+			level: LevelFilter::DEBUG,
 			default_style: Style::new().white(),
 			date_time_style: Style::default().dim(),
 			level_style_error: Style::new().red().bold(),

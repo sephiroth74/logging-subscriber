@@ -6,6 +6,7 @@ use std::path::PathBuf;
 use console::Style;
 use log::Record;
 use tracing::{Event, Level};
+use tracing_subscriber::filter::LevelFilter;
 use tracing_subscriber::layer::Context;
 use tracing_subscriber::Layer;
 
@@ -70,7 +71,7 @@ impl Default for LoggingSubscriberBuilder {
 			style_info: None,
 			style_debug: None,
 			style_trace: None,
-			min_level: tracing::Level::DEBUG,
+			min_level: LevelFilter::DEBUG,
 			separator: " ".to_string(),
 			timestamp_format: "%H:%M:%S%.3f".to_string(),
 			format_level: LevelOutput::Long,
@@ -118,7 +119,7 @@ impl LoggingSubscriberBuilder {
 		subscriber
 	}
 
-	pub fn with_min_level(mut self, value: Level) -> Self {
+	pub fn with_min_level(mut self, value: LevelFilter) -> Self {
 		self.min_level = value;
 		self
 	}
