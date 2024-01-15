@@ -121,7 +121,7 @@ impl AdaptiveStyle {
 	}
 }
 
-impl From<console::Style> for AdaptiveStyle {
+impl From<Style> for AdaptiveStyle {
 	fn from(value: console::Style) -> Self {
 		AdaptiveStyle::from(value)
 	}
@@ -145,6 +145,14 @@ pub fn set_enabled(value: bool) -> Result<(), PoisonError<MutexGuard<'static, Lo
 			item.enabled = value;
 			Ok(())
 		}
+		Err(err) => Err(err),
+	}
+}
+
+/// Returns true if logging is enabled
+pub fn is_enabled() -> Result<bool, PoisonError<MutexGuard<'static, LoggingWriter>>> {
+	match LOGGING_WRITER.lock() {
+		Ok(item) => Ok(item.enabled),
 		Err(err) => Err(err),
 	}
 }
